@@ -1,6 +1,6 @@
-import type { AnalysisResult, Breed } from "@/types/cattle-types"
+import type { AnalysisResult, Breed, BodyParameters } from "@/types/cattle-types"
 
-export const analyzeImage = async (imageFile: File, bodyParams: any): Promise<AnalysisResult> => {
+export const analyzeImage = async (imageFile: File, bodyParams: BodyParameters): Promise<AnalysisResult> => {
   // Simulate AI processing time
   await new Promise((resolve) => setTimeout(resolve, 3000))
 

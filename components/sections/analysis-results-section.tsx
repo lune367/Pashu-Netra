@@ -2,12 +2,12 @@
 
 import type React from "react"
 import { Eye, FileText } from "lucide-react"
-import type { AnalysisResult } from "@/types/cattle-types"
+import type { AnalysisResult, BodyParameters } from "@/types/cattle-types"
 import { getScoreColor } from "@/lib/utils"
 
 interface AnalysisResultsSectionProps {
   analysisResult: AnalysisResult | null
-  onParameterAdjust: (param: string, increment: number) => void
+  onParameterAdjust: (param: keyof BodyParameters, increment: number) => void
 }
 
 const AnalysisResultsSection: React.FC<AnalysisResultsSectionProps> = ({ analysisResult, onParameterAdjust }) => {
@@ -35,28 +35,30 @@ const AnalysisResultsSection: React.FC<AnalysisResultsSectionProps> = ({ analysi
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-semibold text-gray-800 mb-3">Body Structure Parameters</h3>
             <div className="space-y-3">
-              {Object.entries(analysisResult.bodyParameters).map(([key, value]) => (
-                <div key={key} className="flex items-center justify-between bg-white p-3 rounded">
-                  <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, " $1")}:</span>
-                  <div className="flex items-center space-x-3">
-                    <button
-                      onClick={() => onParameterAdjust(key, -1)}
-                      className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
-                    >
-                      -
-                    </button>
-                    <span className="font-medium w-16 text-center">
-                      {value} {key === "rumpAngle" ? "°" : "cm"}
-                    </span>
-                    <button
-                      onClick={() => onParameterAdjust(key, 1)}
-                      className="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors"
-                    >
-                      +
-                    </button>
+              {(Object.entries(analysisResult.bodyParameters) as [keyof BodyParameters, number][]).map(
+                ([key, value]) => (
+                  <div key={key} className="flex items-center justify-between bg-white p-3 rounded">
+                    <span className="text-gray-600 capitalize">{key.replace(/([A-Z])/g, " $1")}:</span>
+                    <div className="flex items-center space-x-3">
+                      <button
+                        onClick={() => onParameterAdjust(key, -1)}
+                        className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
+                      >
+                        -
+                      </button>
+                      <span className="font-medium w-16 text-center">
+                        {value} {key === "rumpAngle" ? "°" : "cm"}
+                      </span>
+                      <button
+                        onClick={() => onParameterAdjust(key, 1)}
+                        className="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ),
+              )}
             </div>
           </div>
 

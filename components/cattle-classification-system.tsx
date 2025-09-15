@@ -9,7 +9,7 @@ import HistorySection from "./sections/history-section"
 import StatisticsSection from "./sections/statistics-section"
 import TabButton from "./ui/tab-button"
 import { analyzeImage } from "@/lib/analysis-utils"
-import type { AnalysisResult } from "@/types/cattle-types"
+import type { AnalysisResult, BodyParameters } from "@/types/cattle-types"
 
 const CattleClassificationSystem = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -17,7 +17,7 @@ const CattleClassificationSystem = () => {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
   const [classificationHistory, setClassificationHistory] = useState<AnalysisResult[]>([])
   const [activeTab, setActiveTab] = useState("upload")
-  const [bodyParams, setBodyParams] = useState({
+  const [bodyParams, setBodyParams] = useState<BodyParameters>({
     bodyLength: 140,
     heightAtWithers: 125,
     chestWidth: 42,
@@ -25,7 +25,7 @@ const CattleClassificationSystem = () => {
   })
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const adjustParameter = (param: string, increment: number) => {
+  const adjustParameter = (param: keyof BodyParameters, increment: number) => {
     setBodyParams((prev) => ({
       ...prev,
       [param]: Math.max(0, prev[param] + increment),
